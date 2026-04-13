@@ -713,8 +713,8 @@ function renderHeader() {
   ui.headline.textContent = headlineFromState();
   ui.actionHint.textContent = state.gameEnded
     ? "캠페인이 종료되었습니다. 새 캠페인을 시작할 수 있습니다."
-    : `정책 1개와 대외 행동 1개를 선택한 뒤 턴을 진행하세요. 현재 선택: ${state.selectedActionId ? "정책 완료" : "정책 미선택"}, ${state.selectedDiplomacyId ? "대외 행동 완료" : "대외 행동 미선택"}`;
-  ui.endTurnButton.disabled = state.gameEnded || !state.selectedActionId || !state.selectedDiplomacyId;
+    : `정책 1개와 대외 행동 1개를 선택하거나, 선택 없이 턴 진행 시 기본 선택이 자동 적용됩니다. 현재 선택: ${state.selectedActionId ? "정책 완료" : "정책 자동선택 가능"}, ${state.selectedDiplomacyId ? "대외 행동 완료" : "대외 행동 자동선택 가능"}`;
+  ui.endTurnButton.disabled = state.gameEnded;
 }
 
 function renderTurnReport() {
@@ -904,13 +904,37 @@ function applyDiplomacyOutcome(diplomacy, targetFaction) {
   return relation;
 }
 
+function autoPickAction() {
+  return state.player.actions[0];
+}
+
+function autoPickDiplomacy() {
+  for (const aiFaction of state.aiFactions) {
+    for (const template of diplomacyTemplates) {
+      if (isDiplomacyAvailable(template, aiFaction)) {
+        return { template, aiFaction };
+      }
+    }
+  }
+  return null;
+}
+
 function executeTurn() {
   if (state.gameEnded) return;
 
-  const action = state.player.actions.find((item) => item.id === state.selectedActionId);
-  const [diplomacyId, targetId] = state.selectedDiplomacyId.split(":");
-  const diplomacy = diplomacyTemplates.find((item) => item.id === diplomacyId);
-  const targetFaction = state.aiFactions.find((item) => item.id === targetId);
+  const action = state.player.actions.find((item) => item.id === state.selectedActionId) || autoPickAction();
+  const chosenDiplomacy = state.selectedDiplomacyId
+    ? (() => {
+        const [diplomacyId, targetId] = state.selectedDiplomacyId.split(":");
+        return {
+          template: diplomacyTemplates.find((item) => item.id === diplomacyId),
+          aiFaction: state.aiFactions.find((item) => item.id === targetId)
+        };
+      })()
+    : autoPickDiplomacy();
+
+  const diplomacy = chosenDiplomacy?.template;
+  const targetFaction = chosenDiplomacy?.aiFaction;
   if (!action || !diplomacy || !targetFaction) return;
 
   applyEffects(state.player, action.effects);

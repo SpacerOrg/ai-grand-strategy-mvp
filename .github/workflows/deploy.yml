@@ -32,11 +32,9 @@ jobs:
 
       - name: Run tests
         run: npm test
-        working-directory: ai-grand-strategy-mvp
 
       - name: Build site
         run: npm run build
-        working-directory: ai-grand-strategy-mvp
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -44,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ai-grand-strategy-mvp/dist
+          path: dist
 
   deploy:
     environment:
