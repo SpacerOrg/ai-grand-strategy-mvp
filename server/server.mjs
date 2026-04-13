@@ -70,9 +70,9 @@ const server = http.createServer(async (req, res) => {
       const body = await readBody(req);
       const payload = JSON.parse(body || '{}');
       const briefing = await generateBriefing(payload);
-      return sendJson(res, 200, { ok: true, briefing });
+      return sendJson(res, 200, { ok: true, briefing, status: 'completed' });
     } catch (error) {
-      return sendJson(res, 500, { ok: false, error: String(error.message || error) });
+      return sendJson(res, 500, { ok: false, error: String(error.message || error), status: 'failed' });
     }
   }
 

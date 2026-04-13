@@ -294,6 +294,7 @@ const ui = {
   tensionValue: document.getElementById("tensionValue"),
   tensionBar: document.getElementById("tensionBar"),
   actionHint: document.getElementById("actionHint"),
+  healthCheckButton: document.getElementById("healthCheckButton"),
   restartButton: document.getElementById("restartButton"),
   saveButton: document.getElementById("saveButton"),
   loadButton: document.getElementById("loadButton"),
@@ -703,6 +704,19 @@ function renderStatusFlags() {
   });
 }
 
+async function checkLlmHealth() {
+  try {
+    const response = await fetch(`${LLM_BRIDGE_URL}/health`);
+    if (!response.ok) throw new Error(`health ${response.status}`);
+    const data = await response.json();
+    ui.llmStatus.textContent = `LLM 브리핑: 연결됨 (${data.modelName})`;
+    return true;
+  } catch (error) {
+    ui.llmStatus.textContent = 'LLM 브리핑: 로컬 브리지 연결 안 됨';
+    return false;
+  }
+}
+
 async function requestLlmBriefing(report) {
   try {
     const response = await fetch(`${LLM_BRIDGE_URL}/api/briefing`, {
@@ -724,7 +738,7 @@ async function requestLlmBriefing(report) {
     const data = await response.json();
     if (!data.ok || !data.briefing) throw new Error(data.error || 'briefing failed');
     state.llmBriefing = data.briefing;
-    ui.llmStatus.textContent = 'LLM 브리핑: 연결됨';
+    ui.llmStatus.textContent = 'LLM 브리핑: 생성 성공';
   } catch (error) {
     state.llmBriefing = null;
     ui.llmStatus.textContent = 'LLM 브리핑: 로컬 브리지 연결 안 됨';
@@ -1080,5 +1094,7 @@ ui.endTurnButton.addEventListener("click", executeTurn);
 ui.restartButton.addEventListener("click", startGame);
 ui.saveButton.addEventListener("click", saveGame);
 ui.loadButton.addEventListener("click", loadGame);
+ui.healthCheckButton.addEventListener("click", checkLlmHealth);
 
 startGame();
+checkLlmHealth();

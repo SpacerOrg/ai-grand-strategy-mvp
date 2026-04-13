@@ -1,0 +1,63 @@
+{
+  "flowId": "briefing-1776048559913-bgz08p",
+  "controllerId": "spacerorg/project-pm",
+  "ownerSessionKey": "agent:main:discord:channel:1492803134433792091",
+  "goal": "Generate world briefing with runtime-tracked execution",
+  "dri": "project-pm",
+  "chapter": "projects",
+  "silo": "delivery",
+  "status": "failed",
+  "currentStep": "briefing-failed",
+  "doneCriteria": [
+    "payload validated",
+    "validator findings attached",
+    "briefing generation attempted",
+    "result reported or failure recorded"
+  ],
+  "openQuestions": [],
+  "blockers": [
+    "fetch failed"
+  ],
+  "validatorFindings": {
+    "auditor": [
+      {
+        "id": "auditor-1776048559917",
+        "summary": "Payload shape and reporting objective reviewed",
+        "severity": "medium",
+        "response": "",
+        "resolved": false
+      }
+    ],
+    "riskManager": [
+      {
+        "id": "riskManager-1776048559918",
+        "summary": "Local model bridge failure and fallback path reviewed",
+        "severity": "medium",
+        "response": "",
+        "resolved": false
+      }
+    ],
+    "devilsAdvocate": [
+      {
+        "id": "devilsAdvocate-1776048559918",
+        "summary": "Check whether rule-based fallback is simpler or sufficient",
+        "severity": "medium",
+        "response": "",
+        "resolved": false
+      }
+    ]
+  },
+  "decisionLog": [],
+  "escalationBoundary": {
+    "needsHumanApproval": false,
+    "destructiveAction": false,
+    "externalAction": false,
+    "crossChapterConflict": false,
+    "fairnessRisk": false
+  },
+  "childTasks": [],
+  "reports": [],
+  "createdAt": 1776048559913,
+  "updatedAt": 1776048559919,
+  "revision": 6
+}

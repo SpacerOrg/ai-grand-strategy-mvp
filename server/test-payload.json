@@ -1,0 +1,10 @@
+{
+  "faction": "Spacer",
+  "action": "Expand logistics",
+  "diplomacy": "Stabilize alliance",
+  "event": "Regional trade shock",
+  "worldTension": 42,
+  "allianceCount": 3,
+  "warCount": 1,
+  "summary": "Supply lines improved under pressure"
+}
