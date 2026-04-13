@@ -1,0 +1,412 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --bg-2: #141b33;
+  --panel: #171d31;
+  --panel-alt: #212944;
+  --panel-soft: #111728;
+  --text: #f3f6ff;
+  --muted: #aab3d4;
+  --accent: #79e5f7;
+  --accent-2: #8cf3af;
+  --accent-3: #ffcf70;
+  --danger: #ff7f8e;
+  --war: #ff6b6b;
+  --alliance: #6cf0bf;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #243368 0%, transparent 32%),
+    linear-gradient(180deg, var(--bg-2), var(--bg));
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  transition: transform 120ms ease, opacity 120ms ease, background 120ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.app {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.hero,
+.panel-header,
+.subpanel-header,
+.action-card,
+.headline,
+.log-entry-header,
+.danger-meter-header,
+.rival-row,
+.faction-option-footer,
+.status-flag,
+.news-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hero {
+  margin-bottom: 20px;
+}
+
+.hero-actions,
+.chip-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.eyebrow,
+.badge,
+.chip,
+.news-tag,
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.eyebrow,
+.badge,
+.chip,
+.status-pill.neutral {
+  background: rgba(121, 229, 247, 0.12);
+  color: var(--accent);
+}
+
+.chip-accent,
+.status-pill.good {
+  background: rgba(140, 243, 175, 0.12);
+  color: var(--accent-2);
+}
+
+.status-pill.warn {
+  background: rgba(255, 207, 112, 0.14);
+  color: var(--accent-3);
+}
+
+.status-pill.bad {
+  background: rgba(255, 107, 107, 0.14);
+  color: var(--war);
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(30px, 4vw, 46px);
+  margin-top: 8px;
+}
+
+.subtitle,
+.muted {
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.02fr 1.1fr 1.08fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel,
+.subpanel,
+.faction-option,
+.stat-card,
+.resource-card,
+.action-card,
+.diplomacy-card,
+.log-entry,
+.news-item,
+.rival-row,
+.objectives-list li,
+.status-flags li {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.subpanel,
+.faction-card,
+.world-state {
+  background: var(--panel-soft);
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.faction-select-panel {
+  margin-bottom: 18px;
+}
+
+.faction-select-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.faction-option {
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.faction-option.active {
+  outline: 2px solid rgba(121, 229, 247, 0.65);
+  background: linear-gradient(180deg, rgba(121, 229, 247, 0.12), rgba(255, 255, 255, 0.02));
+}
+
+.faction-option p {
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.faction-option-footer {
+  margin-top: 14px;
+}
+
+.stats-grid,
+.resource-grid,
+.rival-board,
+.news-feed,
+.event-log,
+.objectives-list,
+.actions-list,
+.diplomacy-list,
+.status-flags {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.stats-grid,
+.resource-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat-card,
+.resource-card {
+  padding: 14px;
+  background: var(--panel-alt);
+  border-radius: 16px;
+}
+
+.stat-card strong,
+.resource-card strong {
+  display: block;
+  font-size: 28px;
+  margin-top: 8px;
+}
+
+.stat-card small,
+.resource-card small {
+  color: var(--muted);
+}
+
+.meter-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.meter-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--alliance), var(--accent-3), var(--war));
+}
+
+.action-card,
+.diplomacy-card,
+.log-entry,
+.news-item,
+.rival-row,
+.objectives-list li,
+.status-flags li {
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.action-card.selected,
+.diplomacy-card.selected {
+  outline: 2px solid rgba(140, 243, 175, 0.6);
+}
+
+.action-card button,
+.diplomacy-card button,
+#endTurnButton,
+.secondary {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+#endTurnButton,
+.action-card button,
+.diplomacy-card button {
+  background: linear-gradient(135deg, var(--accent), #67b6ff);
+  color: #07111a;
+}
+
+.report-panel {
+  margin-top: 18px;
+}
+
+.turn-report {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.turn-report.empty {
+  color: var(--muted);
+}
+
+.turn-report ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.headline {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(140, 243, 175, 0.1);
+  border: 1px solid rgba(140, 243, 175, 0.22);
+  color: var(--accent-2);
+}
+
+.objectives-list,
+.news-feed,
+.event-log,
+.status-flags {
+  list-style: none;
+}
+
+.objectives-list li,
+.news-item p,
+.log-entry p,
+.rival-row p,
+.status-flags li {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.relation-positive {
+  color: var(--alliance);
+}
+
+.relation-neutral {
+  color: var(--accent-3);
+}
+
+.relation-negative,
+.relation-war {
+  color: var(--war);
+}
+
+.hidden {
+  display: none;
+}
+
+.ending-summary {
+  margin-top: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.compact {
+  margin-top: 14px;
+}
+
+@media (max-width: 1200px) {
+  .layout,
+  .faction-select-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .app {
+    padding: 16px;
+  }
+
+  .hero,
+  .panel-header,
+  .subpanel-header,
+  .action-card,
+  .headline,
+  .log-entry-header,
+  .danger-meter-header,
+  .rival-row,
+  .faction-option-footer,
+  .status-flag,
+  .news-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats-grid,
+  .resource-grid {
+    grid-template-columns: 1fr;
+  }
+}

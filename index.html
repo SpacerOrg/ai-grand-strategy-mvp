@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Grand Strategy MVP</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">AI Grand Strategy MVP</p>
+          <h1>비결정론적 세계사·미래 전략 시뮬레이터</h1>
+          <p class="subtitle">
+            12턴 동안 세력 하나를 운영하며 내정, 외교, 제재, 동맹, 전쟁을 통해 패권 또는 생존을 노립니다.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="saveButton" class="secondary">저장</button>
+          <button id="loadButton" class="secondary">불러오기</button>
+          <button id="restartButton" class="secondary">새 캠페인</button>
+          <button id="endTurnButton">턴 진행</button>
+        </div>
+      </header>
+
+      <section class="panel faction-select-panel">
+        <div class="panel-header">
+          <h2>플레이 세력 선택</h2>
+          <span class="muted">세력 교리와 승리 초점이 다릅니다</span>
+        </div>
+        <div id="factionSelectList" class="faction-select-list"></div>
+      </section>
+
+      <main class="layout">
+        <section class="panel status-panel">
+          <div class="panel-header">
+            <h2>국가 현황</h2>
+            <span id="turnBadge" class="badge">Turn 1 / 12</span>
+          </div>
+          <div class="faction-card">
+            <h3 id="factionName"></h3>
+            <p id="factionSummary" class="muted"></p>
+            <div class="chip-row">
+              <span id="doctrineChip" class="chip"></span>
+              <span id="victoryChip" class="chip chip-accent"></span>
+            </div>
+          </div>
+          <div class="stats-grid" id="statsGrid"></div>
+          <div class="resource-grid" id="resourceGrid"></div>
+          <div class="world-state">
+            <h3>세계 정세</h3>
+            <p id="worldSummary"></p>
+            <div class="danger-meter">
+              <div class="danger-meter-header">
+                <span>세계 긴장도</span>
+                <strong id="tensionValue">0</strong>
+              </div>
+              <div class="meter-bar"><span id="tensionBar"></span></div>
+            </div>
+          </div>
+          <div class="subpanel compact">
+            <div class="subpanel-header">
+              <h3>현 체제 상태</h3>
+              <span class="muted">붕괴와 패권 사이</span>
+            </div>
+            <ul id="statusFlags" class="status-flags"></ul>
+          </div>
+        </section>
+
+        <section class="panel center-panel">
+          <div class="panel-header">
+            <h2>이번 턴 결정</h2>
+            <span id="actionHint" class="muted">정책 1개와 대외 행동 1개를 선택하세요.</span>
+          </div>
+
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>정책 카드</h3>
+              <span class="muted">내부 성장과 통치 리스크 관리</span>
+            </div>
+            <div id="actionsList" class="actions-list"></div>
+          </div>
+
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>대외 행동</h3>
+              <span class="muted">외교, 동맹, 제재, 전쟁</span>
+            </div>
+            <div id="diplomacyList" class="diplomacy-list"></div>
+          </div>
+
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>전략 목표</h3>
+              <span class="muted">엔딩 조건과 직결</span>
+            </div>
+            <ul id="objectivesList" class="objectives-list"></ul>
+          </div>
+        </section>
+
+        <section class="panel intelligence-panel">
+          <div class="panel-header">
+            <h2>세계 정보</h2>
+            <span class="muted">세력 관계, 뉴스, 전황</span>
+          </div>
+          <div id="headline" class="headline"></div>
+          <div class="subpanel compact">
+            <div class="subpanel-header">
+              <h3>세력 관계도</h3>
+              <span class="muted">우호, 긴장, 전쟁, 동맹</span>
+            </div>
+            <div id="rivalBoard" class="rival-board"></div>
+          </div>
+          <div class="subpanel compact">
+            <div class="subpanel-header">
+              <h3>실시간 뉴스 피드</h3>
+              <span class="muted">턴마다 자동 생성</span>
+            </div>
+            <ul id="newsFeed" class="news-feed"></ul>
+          </div>
+          <div class="subpanel compact">
+            <div class="subpanel-header">
+              <h3>연대기</h3>
+              <span class="muted">결정과 사건의 누적 기록</span>
+            </div>
+            <ol id="eventLog" class="event-log"></ol>
+          </div>
+        </section>
+      </main>
+
+      <section class="panel report-panel" id="reportPanel">
+        <div class="panel-header">
+          <h2>최근 턴 리포트</h2>
+          <span class="muted">직전 결과 요약</span>
+        </div>
+        <div id="turnReport" class="turn-report empty">아직 턴이 진행되지 않았습니다.</div>
+      </section>
+
+      <section class="panel endgame-panel hidden" id="endgamePanel">
+        <div class="panel-header">
+          <h2>캠페인 결산</h2>
+          <span id="endingBadge" class="badge"></span>
+        </div>
+        <p id="endingSummary" class="ending-summary"></p>
+        <div id="finalScoreGrid" class="stats-grid"></div>
+      </section>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
