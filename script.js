@@ -272,6 +272,7 @@ const resourceLabels = {
 };
 
 const STORAGE_KEY = "ai-grand-strategy-mvp-save";
+const LLM_BRIDGE_URL = "http://127.0.0.1:8787";
 
 const ui = {
   factionSelectList: document.getElementById("factionSelectList"),
@@ -302,7 +303,8 @@ const ui = {
   endingSummary: document.getElementById("endingSummary"),
   finalScoreGrid: document.getElementById("finalScoreGrid"),
   statusFlags: document.getElementById("statusFlags"),
-  turnReport: document.getElementById("turnReport")
+  turnReport: document.getElementById("turnReport"),
+  llmStatus: document.getElementById("llmStatus")
 };
 
 let state;
@@ -701,6 +703,34 @@ function renderStatusFlags() {
   });
 }
 
+async function requestLlmBriefing(report) {
+  try {
+    const response = await fetch(`${LLM_BRIDGE_URL}/api/briefing`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        faction: state.player.name,
+        action: report.action,
+        diplomacy: report.diplomacy,
+        event: report.event,
+        worldTension: report.worldTension,
+        allianceCount: report.allianceCount,
+        warCount: report.warCount,
+        summary: report.summary
+      })
+    });
+
+    if (!response.ok) throw new Error(`bridge ${response.status}`);
+    const data = await response.json();
+    if (!data.ok || !data.briefing) throw new Error(data.error || 'briefing failed');
+    state.llmBriefing = data.briefing;
+    ui.llmStatus.textContent = 'LLM 브리핑: 연결됨';
+  } catch (error) {
+    state.llmBriefing = null;
+    ui.llmStatus.textContent = 'LLM 브리핑: 로컬 브리지 연결 안 됨';
+  }
+}
+
 function renderHeader() {
   ui.factionName.textContent = state.player.name;
   ui.factionSummary.textContent = state.player.summary;
@@ -710,7 +740,7 @@ function renderHeader() {
   ui.turnBadge.textContent = `Turn ${Math.min(state.turn, MAX_TURNS)} / ${MAX_TURNS}`;
   ui.tensionValue.textContent = String(state.worldTension);
   ui.tensionBar.style.width = `${state.worldTension}%`;
-  ui.headline.textContent = headlineFromState();
+  ui.headline.textContent = state.llmBriefing || headlineFromState();
   ui.actionHint.textContent = state.gameEnded
     ? "캠페인이 종료되었습니다. 새 캠페인을 시작할 수 있습니다."
     : `정책 1개와 대외 행동 1개를 선택하거나, 선택 없이 턴 진행 시 기본 선택이 자동 적용됩니다. 현재 선택: ${state.selectedActionId ? "정책 완료" : "정책 자동선택 가능"}, ${state.selectedDiplomacyId ? "대외 행동 완료" : "대외 행동 자동선택 가능"}`;
@@ -919,7 +949,7 @@ function autoPickDiplomacy() {
   return null;
 }
 
-function executeTurn() {
+async function executeTurn() {
   if (state.gameEnded) return;
 
   const action = state.player.actions.find((item) => item.id === state.selectedActionId) || autoPickAction();
@@ -986,6 +1016,7 @@ function executeTurn() {
     state.endgame = evaluateEndgame();
   }
 
+  await requestLlmBriefing(state.turnReport);
   render();
 }
 
@@ -1025,7 +1056,8 @@ function startGame() {
     selectedActionId: null,
     selectedDiplomacyId: null,
     lastSummary: "",
-    turnReport: null
+    turnReport: null,
+    llmBriefing: null
   };
   initializeCampaign(state.selectedFactionId);
 }
